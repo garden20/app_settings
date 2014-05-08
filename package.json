@@ -1,6 +1,6 @@
 {
   "name": "app_settings",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Manage an app_settings property on a couchdb design document.",
   "main": "index.js",
   "dependencies": {

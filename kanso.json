@@ -4,7 +4,7 @@
     "description": "Manage an app_settings property on a couchdb design document.",
     "url": "https://github.com/garden20/app_settings",
     "load": "app-settings/app",
-    "modules": "app-settings",
+    "modules": ["app-settings", "tests"],
     "dependencies": {
         "modules": null,
         "properties": null

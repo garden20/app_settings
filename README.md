@@ -23,6 +23,10 @@ To access the settings, request the app_settings show passing the name of the de
 Do not to pass the ID of the design doc (eg: '_design/kujua-lite'), instead
 pass the name (eg: 'kujua-lite'). This avoids having to escape the parameters.
 
+This will return an object with two main properties, `settings` and `schema`.
+The schema is what is used to validate the settings.  If you just need the
+settings values then use the `settings` property.
+
 Optionally you can also pass in a path to a specific property using an object
 path dot notation, like:
 

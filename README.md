@@ -16,12 +16,12 @@ Retrieve Settings
 To access the settings, request the app_settings show passing the name of the design doc, eg:
 
 ```
-    GET /kujua-lite/_design/kujua-lite/_rewrite/app_settings/kujua-lite HTTP/1.1
+    GET /medic/_design/medic/_rewrite/app_settings/medic HTTP/1.1
     Host: localhost
 ```
 
-Do not to pass the ID of the design doc (eg: '_design/kujua-lite'), instead
-pass the name (eg: 'kujua-lite'). This avoids having to escape the parameters.
+Do not to pass the ID of the design doc (eg: '_design/medic'), instead
+pass the name (eg: 'medic'). This avoids having to escape the parameters.
 
 This will return an object with two main properties, `settings` and `schema`.
 The schema is what is used to validate the settings.  If you just need the
@@ -31,7 +31,7 @@ Optionally you can also pass in a path to a specific property using an object
 path dot notation, like:
 
 ```
-    GET /kujua-lite/_design/kujua-lite/_rewrite/app_settings/kujua-lite/foo.bar.baz HTTP/1.1
+    GET /medic/_design/medic/_rewrite/app_settings/medic/foo.bar.baz HTTP/1.1
     Host: localhost
 ```
 
@@ -43,7 +43,7 @@ Update Settings
 To update the settings, PUT the new settings to the document update function passing the name of the design doc, eg:
 
 ```
-    PUT /kujua-lite/_design/kujua-lite/_rewrite/update_settings/kujua-lite HTTP/1.1
+    PUT /medic/_design/medic/_rewrite/update_settings/medic HTTP/1.1
     Host: localhost
     Content-Type: application/json; charset=utf-8
 
@@ -60,7 +60,7 @@ To replace an object completely use the `?replace=1` query parameter. For
 example:
 
 ```
-    PUT /kujua-lite/_design/kujua-lite/_rewrite/update_settings/kujua-lite?replace=1 HTTP/1.1
+    PUT /medic/_design/medic/_rewrite/update_settings/medic?replace=1 HTTP/1.1
     Host: localhost
     Content-Type: application/json; charset=utf-8
 
@@ -77,7 +77,7 @@ Command line
 Restore
 -------
 
-    app_settings restore http://admin:admin@localhost:5984/kujua/_design/kujua-lite
+    app_settings restore http://admin:admin@localhost:5984/kujua/_design/medic
 
 Restore app_settings from the last revision of the doc that had app_settings. Useful when a couchapp has been pushed in development mode, and the app_settings have not been preserved.
 
@@ -85,7 +85,7 @@ Restore app_settings from the last revision of the doc that had app_settings. Us
 Clear
 -----
 
-    app_settings clear http://admin:admin@localhost:5984/kujua/_design/kujua-lite
+    app_settings clear http://admin:admin@localhost:5984/kujua/_design/medic
 
 Removes the app_settings from the design doc. They can be restored with the restore command above.
 
@@ -93,7 +93,7 @@ Removes the app_settings from the design doc. They can be restored with the rest
 Copy
 ----
 
-    app_settings copy http://admin:admin@localhost:5984/kujua/_design/kujua-lite http://admin:admin@remote:5984/kujua/_design/kujua-lite
+    app_settings copy http://admin:admin@localhost:5984/kujua/_design/medic http://admin:admin@remote:5984/kujua/_design/medic
 
 
 Copy app_settings from one app to another. The second url is the the target design doc to copy to.

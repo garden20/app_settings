@@ -9,7 +9,7 @@ API
 To access or update app_settings in a couchapp, add a dependency to this package, then include the following in your rewrites.js
 
     rewrites.concat(require('app-settings/rewrites'));
-    
+
 Retrieve Settings
 -----------------
 
@@ -40,34 +40,56 @@ This would return the `baz` object located at `{foo: {bar: {baz: {}}}}`.
 Update Settings
 -----------------
 
-To update the settings, PUT the new settings to the document update function passing the name of the design doc, eg:
+NB: this will not replace the whole settings with the object you are PUTing. Currently there is no endpoint to do that. Read this section carefully! [See the tests for examples of behavior](https://github.com/garden20/app_settings/blob/master/tests/app-settings/update.js).
 
+This endpoint will merge or replace a part of the app_settings with the changes object (partial app_settings, containing only the fields you want to change) that you pass in the PUT. The changes object should be valid JSON.
+
+There are two modes : merging (default) and replacing.
+
+
+#### Merging
+PUT a partial app_settings object, which contains the part you want to update. It's not necessary to pass the parts that stay the same. The app_settings will be merged with your update object.
+
+Initial settings :
+`{ parent: { one: "a", two: "b" }, other: {stuff: "blah" } }`
+
+Request :
 ```
-    PUT /medic/_design/medic/_rewrite/update_settings/medic HTTP/1.1
+    PUT /< dbname >/_design/< ddoc name >/_rewrite/update_settings/< ddoc name > HTTP/1.1
     Host: localhost
     Content-Type: application/json; charset=utf-8
 
-    { "forms": { "R": { "name": "foo", "desc": "bar" }}} 
+    { "parent": { "one": "d", "three": "c" } }
 ```
 
-As with retrieving settings, use the name of the design document, not the ID.
+Resulting settings :
+`{ parent: { one: "d", two: "b", three: "c" }, other: {stuff: "blah" } }`
 
-The body must be a valid JSON object and will be merged with the current
-app_settings, so you should submit a partial object rather than the entire
-app_settings.  **Note** that app_settings arrays are replaced not merged.
+`parent.three` has been added because it wasn't present at all originally.
+`parent.one` has been replaced because it was already present.
+`other` is unchanged. (Note : it's not removed! The object passed in the request doesn't replace the existing one.)
 
-To replace an object completely use the `?replace=1` query parameter. For
-example:
+
+#### Replacing
+You cannot replace the whole app_settings object, but you can replace a top-level property of the app_settings object.
+
+Initial settings :
+`{ parent: { one: "a", two: "b" }, other: {stuff: "blah" } }`
 
 ```
-    PUT /medic/_design/medic/_rewrite/update_settings/medic?replace=1 HTTP/1.1
+    PUT /< dbname >/_design/< ddoc name >/_rewrite/update_settings/< ddoc name >?replace=1 HTTP/1.1
     Host: localhost
     Content-Type: application/json; charset=utf-8
 
-    { "forms": { "R": { "name": "foo", "desc": "bar" }}} 
+    { "parent": { "three": "c" } }
 ```
 
-Then the forms object would be completely replaced instead of extended/merged.
+Resulting settings :
+`{ parent: { three: "c" }, other: {stuff: "blah" } }
+
+The `parent` top-level property has been replaced by the one passed in the request.
+The `other` field is left unchanged, since the object passed in the request didn't contain an `other` top-level field.
+
 
 Command line
 ============
